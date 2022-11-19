@@ -59,27 +59,30 @@ def compare(
     images: typing.List[str],
     height: typing.Union[str|int] ='auto',
     add_controls: bool = True,
-    # // either "circle", "horizonal" or "vertical"
-    start_mode: StartMode = StartMode.CIRCLE,
-    # // size of circle outline as fraction of image width or height (whatever is bigger)
+    start_mode: typing.Union[StartMode, str] = StartMode.CIRCLE,
     circumference_fraction: float = 0.005,
-    # // overwrite circle size
     circle_size: typing.Optional[float] = None,
     circle_fraction: float = 0.2,
-    # // draw line around circle
     show_circle: bool = True,
     revolve_imgs_on_click: bool = True,
     slider_fraction: float = 0.01,
-    # // time slider takes to reach clicked location
     slider_time: float = 400,
-    # // apply when moving slider
-    # // see: https://easings.net
     # rate_function: str = 'ease_in_out_cubic',
-    # // 0.0 -> left; 1.0 -> right
     start_slider_pos: float = 0.5,
-    # // draw line at slider
     show_slider: bool = True,
-):
+) -> :
+    """
+    Args:
+        add_controls: pass False to not create controls
+        start_mode: either "circle", "horizonal" or "vertical"
+        circumference_fraction: size of circle outline as fraction of image width or height (whatever is bigger)
+        circle_size: the radius in pixel
+        circle_fraction: a fraction of the image width or height (whichever is bigger—called max_size in this document)
+        show_circle: draw line around circle
+        slider_time: time slider takes to reach clicked location
+        start_slider_pos: 0.0 -> left; 1.0 -> right
+        show_slider: draw line at slider
+    """
     image_urls = [
         img2url(img) for img in images
     ]
