@@ -14,7 +14,7 @@ ImageLike = typing.TypeVar('ImageLike')
 ImageSource = typing.TypeVar('ImageSource', str, bytes, ImageLike)
 
 
-def img2bytes(img: ImageLike, format: str = 'jpeg') -> bytes:
+def img2bytes(img: ImageLike, format: str, cmap: str) -> bytes:
     im_file = io.BytesIO()
     if isinstance(img, PIL.Image.Image):
         img.save(im_file, format=format)
@@ -22,17 +22,17 @@ def img2bytes(img: ImageLike, format: str = 'jpeg') -> bytes:
         # anything other that can be displayed with plt.imshow
         import matplotlib.pyplot as plt
         
-        plt.imsave(im_file, img, format=format, cmap= 'gray')
+        plt.imsave(im_file, img, format=format, cmap=cmap)
     return im_file.getvalue()
 
 
-def img2url(img: ImageSource) -> str:
+def img2url(img: ImageSource, format: str, cmap: str) -> str:
     if isinstance(img, str):
         return img.strip()
     if isinstance(img, bytes):
         data = img
     else:
-        data = img2bytes(img)
+        data = img2bytes(img, format=format, cmap=cmap)
     return f"data:image/jpeg;base64,{str(base64.b64encode(data), 'utf8')}"
 
 
@@ -85,6 +85,8 @@ def compare(
     # rate_function: str = 'ease_in_out_cubic',
     start_slider_pos: float = 0.5,
     show_slider: bool = True,
+    display_format: str = 'jpeg',
+    cmap: str = 'gray',
 ) -> IPython.display.HTML:
     """
     Args:
@@ -100,7 +102,7 @@ def compare(
     """
     images = [image1, image2, *other_images]
     image_urls = [
-        img2url(img) for img in images
+        img2url(img, format=display_format, cmap=cmap) for img in images
     ]
     _locals = locals()
     config = {k: _locals[k] for k in [
