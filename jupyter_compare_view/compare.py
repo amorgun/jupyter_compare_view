@@ -86,7 +86,7 @@ def compare(
     start_slider_pos: float = 0.5,
     show_slider: bool = True,
     display_format: str = 'jpeg',
-    cmap: str = 'gray',
+    cmap: typing.Optional[str] = None,
 ) -> IPython.display.HTML:
     """
     Args:
