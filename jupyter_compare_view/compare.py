@@ -22,7 +22,7 @@ def img2bytes(img: ImageLike, format: str = 'jpeg') -> bytes:
         # anything other that can be displayed with plt.imshow
         import matplotlib.pyplot as plt
         
-        plt.imsave(im_file, img, format=format)
+        plt.imsave(im_file, img, format=format, cmap= 'gray')
     return im_file.getvalue()
 
 
