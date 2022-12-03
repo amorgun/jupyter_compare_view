@@ -11,6 +11,7 @@ import PIL
 
 
 ImageLike = typing.TypeVar('ImageLike')
+ImageSource = typing.TypeVar('ImageSource', str, bytes, ImageLike)
 
 
 def img2bytes(img: ImageLike, format: str = 'jpeg') -> bytes:
@@ -25,7 +26,7 @@ def img2bytes(img: ImageLike, format: str = 'jpeg') -> bytes:
     return im_file.getvalue()
 
 
-def img2url(img: typing.Union[str, bytes, ImageLike]) -> str:
+def img2url(img: ImageSource) -> str:
     if isinstance(img, str):
         return img.strip()
     if isinstance(img, bytes):
@@ -68,7 +69,9 @@ class StartMode(str, enum.Enum):
 
 
 def compare(
-    images: typing.List[typing.Union[str, bytes, ImageLike]],
+    image1: ImageSource,
+    image2: ImageSource,
+    *other_images: ImageSource,
     height: typing.Union[str, int] ='auto',
     add_controls: bool = True,
     start_mode: typing.Union[StartMode, str] = StartMode.CIRCLE,
@@ -95,6 +98,7 @@ def compare(
         start_slider_pos: 0.0 -> left; 1.0 -> right
         show_slider: draw line at slider
     """
+    images = [image1, image2, *other_images]
     image_urls = [
         img2url(img) for img in images
     ]
